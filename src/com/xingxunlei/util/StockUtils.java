@@ -152,15 +152,13 @@ public class StockUtils {
         }
 
         Map<String, Stock> stockMap = new HashMap<String, Stock>();
-        for (int i = 0; i < resultArray.length; i++) {
+        for (int i = 0; i < resultArray.length - 1; i++) {
             Stock stock = handlerStock(resultArray[i]);
-            if (null != stock) {
-                stockMap.put(stock.getCode(), stock);
-            } else {
-                if (resultArray[i].length() > 8) {
-                    stockMap.put(resultArray[i].replace("var hq_str_", "").substring(0, 8), new Stock());
-                }
-            }
+            if (null == stock)
+                continue;
+            if (stockMap.get(stock.getCode()) != null)
+                continue;
+            stockMap.put(stock.getCode(), stock);
         }
         return stockMap;
     }
@@ -178,6 +176,10 @@ public class StockUtils {
         List<Stock> stockList = new ArrayList<Stock>();
         for (int i = 0; i < resultArray.length; i++) {
             Stock stock = handlerStock(resultArray[i]);
+            if (null == stock)
+                continue;
+            if (stockList.contains(stock))
+                continue;
             stockList.add(stock);
         }
         return stockList;
@@ -194,17 +196,15 @@ public class StockUtils {
         }
 
         String[] stockArray = resultArray[0].split("=");
-        if (stockArray.length < 2) {
-            return null;
-        }
         String codeResponse = stockArray[0].replace("var hq_str_", "").trim();
-        String stockResponse = stockArray[1].replace("\"", "");
-        String[] dataArray = stockResponse.split(",");
-        if (dataArray.length < 2) {
-            return null;
-        }
         Stock stock = new Stock();
         stock.setCode(codeResponse.toUpperCase());
+
+        String stockResponse = stockArray[1].replace("\"", "");
+        if (StringUtils.isEmpty(stockResponse)) {
+            return stock;
+        }
+        String[] dataArray = stockResponse.split(",");
         stock.setName(dataArray[0]);
         stock.setJrkpj(dataArray[1]);
         stock.setZrspj(dataArray[2]);
