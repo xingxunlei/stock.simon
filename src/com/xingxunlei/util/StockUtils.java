@@ -152,7 +152,7 @@ public class StockUtils {
         }
 
         Map<String, Stock> stockMap = new HashMap<String, Stock>();
-        for (int i = 0; i < resultArray.length - 1; i++) {
+        for (int i = 0; i < resultArray.length; i++) {
             Stock stock = handlerStock(resultArray[i]);
             if (null == stock)
                 continue;
@@ -174,7 +174,7 @@ public class StockUtils {
         }
 
         List<Stock> stockList = new ArrayList<Stock>();
-        for (int i = 0; i < resultArray.length; i++) {
+        for (int i = 0; i < resultArray.length - 1; i++) {
             Stock stock = handlerStock(resultArray[i]);
             if (null == stock)
                 continue;
@@ -186,6 +186,7 @@ public class StockUtils {
     }
 
     private static Stock handlerStock(String result) {
+        result = result.trim();
         if (StringUtils.isEmpty(result)) {
             return null;
         }
