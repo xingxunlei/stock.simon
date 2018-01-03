@@ -21,7 +21,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * ClassName:SinaConnector
  * 
- * Function: 新浪财经股票行情数据接口
+ * Function: 新浪财经股票行情数据接口实现类
  * 
  * @author Simon
  * @version
@@ -35,14 +35,14 @@ public class SinaConnector implements StockConnector {
     private final static String PROXY = "http://hq.sinajs.cn";
     private final static String SEARCH_PROXY_URL = PROXY + "/list=";
 
-    public String search(String keyword) {
+    public String search(String stockCode) {
         String result = null;
 
-        if (StringUtils.isEmpty(keyword)) {
+        if (StringUtils.isEmpty(stockCode)) {
             return result;
         }
 
-        byte[] b = HttpUtils.doGet(SEARCH_PROXY_URL + keyword);
+        byte[] b = HttpUtils.doGet(SEARCH_PROXY_URL + stockCode);
         try {
             result = new String(b, "GB2312");
         } catch (UnsupportedEncodingException e) {

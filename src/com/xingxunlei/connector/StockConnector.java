@@ -26,5 +26,11 @@ package com.xingxunlei.connector;
  * @see
  */
 public interface StockConnector {
-    public String search(String keyword);
+
+    /**
+     * 根据代码查询股票行情数据
+     * @param stockCode
+     * @return
+     */
+    public String search(String stockCode);
 }
